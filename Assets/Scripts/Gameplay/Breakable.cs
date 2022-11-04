@@ -17,6 +17,7 @@ public class Breakable : MonoBehaviour
 
     private void Awake()
     {
+        _sprite = GetComponentInChildren<SpriteRenderer>();
         _currentHealth = Health;
         _innerRigidbodies = insides.GetComponentsInChildren<Rigidbody2D>().ToList();
 
@@ -26,6 +27,8 @@ public class Breakable : MonoBehaviour
     public void Break(Vector2 force)
     {
         _currentHealth--;
+
+        if (_sprite != null) _sprite.color = Color.Lerp(Color.black, Color.white, (float)_currentHealth / Health);
 
         if(_currentHealth > 0) return;
 

@@ -10,14 +10,16 @@ namespace Gameplay
         public ParticleSystem sparks;
         public ParticleSystem shells;
         public LineRenderer line;
-        public Transform slide;
+        // public Transform slide;
         public Transform barrelPoint;
 
         private int _layerMask = 0;
         private Rigidbody2D _rigidbody;
         private float _lastFiredTime;
         private bool _shouldFire;
-        private Vector3 _slidePos;
+        private bool _isLaunched;
+
+        // private Vector3 _slidePos;
 
         private const float SmokeDurationSeconds = 0.5f;
         private const float HitForce = 20f;
@@ -25,9 +27,11 @@ namespace Gameplay
 
         private void Awake()
         {
-            _slidePos = slide.localPosition;
+            // _slidePos = slide.localPosition;
             _rigidbody = GetComponent<Rigidbody2D>();
             _layerMask = LayerMask.GetMask("Default", "Surfaces");
+
+            _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
         }
 
         private void Update()
@@ -37,7 +41,7 @@ namespace Gameplay
             // thin shoot line
             line.startWidth = Mathf.Lerp(line.startWidth, 0f, Time.deltaTime * 50f);
             // return slide
-            slide.transform.localPosition = Vector3.Lerp(slide.transform.localPosition, _slidePos, Time.deltaTime * 10f);
+            // slide.transform.localPosition = Vector3.Lerp(slide.transform.localPosition, _slidePos, Time.deltaTime * 10f);
 
             // smoke emission
             var emission = smoke.emission;
@@ -49,7 +53,6 @@ namespace Gameplay
             {
                 emission.rateOverTime = 0;
             }
-
         }
 
         private void SetTimeScale()
@@ -75,14 +78,36 @@ namespace Gameplay
             if (!_shouldFire) return;
 
             _shouldFire = false;
-            Fire();
+
+            if (_isLaunched)
+            {
+                Fire();
+            }
+            else
+            {
+                Launch();
+            }
+        }
+
+        private void Launch()
+        {
+            _isLaunched = true;
+            _rigidbody.constraints = RigidbodyConstraints2D.None;
+            _rigidbody.AddForceAtPosition(
+                barrelPoint.up * KickForce * 0.6f,
+                barrelPoint.position + -barrelPoint.right * 0.4f,
+                ForceMode2D.Impulse
+            );
+
+            sparks.transform.position = transform.position + Vector3.up;
+            sparks.Emit(5);
         }
 
         private void Fire()
         {
             // raycast
             var position = barrelPoint.position;
-            var hit = Physics2D.Raycast(position, -barrelPoint.right, 100f, _layerMask);
+            var hit = Physics2D.Raycast(position, barrelPoint.right, 100f, _layerMask);
             // particles
             ApplyParticleEffects(hit);
             // line
@@ -90,9 +115,9 @@ namespace Gameplay
             // physics
             ApplyPhysics(hit);
             // slide
-            var pos = slide.localPosition;
-            pos.x += 0.5f;
-            slide.localPosition = pos;
+            // var pos = slide.localPosition;
+            // pos.x += 0.5f;
+            // slide.localPosition = pos;
             // time
             _lastFiredTime = Time.realtimeSinceStartup;
             // camera shake
@@ -120,7 +145,7 @@ namespace Gameplay
             if (hit.collider.attachedRigidbody != null)
             {
                 hit.collider.attachedRigidbody.AddForceAtPosition(
-                    -barrelPoint.right * HitForce,
+                    barrelPoint.right * HitForce,
                     hit.point,
                     ForceMode2D.Impulse
                 );
@@ -128,12 +153,12 @@ namespace Gameplay
                 if (hit.collider.transform.parent &&
                     hit.collider.transform.parent.TryGetComponent<Breakable>(out var breakable))
                 {
-                    breakable.Break(-barrelPoint.right * HitForce);
+                    breakable.Break(barrelPoint.right * HitForce);
                 }
             }
 
             _rigidbody.AddForceAtPosition(
-                barrelPoint.right * KickForce,
+                -barrelPoint.right * KickForce,
                 barrelPoint.position,
                 ForceMode2D.Impulse
             );
