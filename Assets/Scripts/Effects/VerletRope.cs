@@ -1,18 +1,16 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Effects
 {
     public class VerletRope : MonoBehaviour
     {
-        public AnimationCurve tieCurve;
+        public int segmentCount = 10;
+        public float ropeSegmentLength = 0.05f;
+        public Transform endTarget;
 
         private LineRenderer _lineRenderer;
         private readonly List<RopeSegment> _ropeSegments = new List<RopeSegment>();
-        private const float RopeSegLen = 0.05f;
-        private const int SegmentCount = 10;
-        private const float LineWidth = 0.1f;
 
         private Vector2 _anchorPos;
 
@@ -22,10 +20,15 @@ namespace Effects
             _lineRenderer = GetComponent<LineRenderer>();
             var ropeStartPoint = transform.position;
 
-            for (var i = 0; i < SegmentCount; i++)
+            for (var i = 0; i < segmentCount; i++)
             {
                 _ropeSegments.Add(new RopeSegment(ropeStartPoint));
-                ropeStartPoint.y -= RopeSegLen;
+                ropeStartPoint.y -= ropeSegmentLength;
+            }
+
+            if (endTarget)
+            {
+                ropeSegmentLength = Vector3.Distance(transform.position, endTarget.position) / segmentCount;
             }
         }
 
@@ -40,9 +43,9 @@ namespace Effects
         private void Simulate()
         {
             // SIMULATION
-            var forceGravity = new Vector2(0f, -0.81f);
+            var forceGravity = new Vector2(0f, -0.08f);
 
-            for (var i = 1; i < SegmentCount; i++)
+            for (var i = 1; i < segmentCount; i++)
             {
                 var firstSegment = _ropeSegments[i];
                 var velocity = firstSegment.posNow - firstSegment.posOld;
@@ -50,6 +53,13 @@ namespace Effects
                 firstSegment.posNow += velocity;
                 firstSegment.posNow += forceGravity * Time.fixedDeltaTime;
                 _ropeSegments[i] = firstSegment;
+            }
+
+            if (endTarget)
+            {
+                var last = _ropeSegments[^1];
+                last.posNow = endTarget.position;
+                _ropeSegments[^1] = last;
             }
 
             //CONSTRAINTS
@@ -66,19 +76,19 @@ namespace Effects
             firstSegment.posNow = _anchorPos;
             _ropeSegments[0] = firstSegment;
 
-            for (var i = 0; i < SegmentCount - 1; i++)
+            for (var i = 0; i < segmentCount - 1; i++)
             {
                 var firstSeg = _ropeSegments[i];
                 var secondSeg = _ropeSegments[i + 1];
 
                 var dist = (firstSeg.posNow - secondSeg.posNow).magnitude;
-                var error = Mathf.Abs(dist - RopeSegLen);
+                var error = Mathf.Abs(dist - ropeSegmentLength);
                 var changeDir = Vector2.zero;
 
-                if (dist > RopeSegLen)
+                if (dist > ropeSegmentLength)
                 {
                     changeDir = (firstSeg.posNow - secondSeg.posNow).normalized;
-                } else if (dist < RopeSegLen)
+                } else if (dist < ropeSegmentLength)
                 {
                     changeDir = (secondSeg.posNow - firstSeg.posNow).normalized;
                 }
@@ -101,13 +111,8 @@ namespace Effects
 
         private void DrawRope()
         {
-            var width = LineWidth;
-            _lineRenderer.startWidth = width;
-            _lineRenderer.widthCurve = tieCurve;
-            _lineRenderer.endWidth = width;
-
-            var ropePositions = new Vector3[SegmentCount];
-            for (var i = 0; i < SegmentCount; i++)
+            var ropePositions = new Vector3[segmentCount];
+            for (var i = 0; i < segmentCount; i++)
             {
                 ropePositions[i] = _ropeSegments[i].posNow;
             }

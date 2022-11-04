@@ -1,11 +1,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Breakable : MonoBehaviour
 {
-    [Header("Config")]
-    public int Health = 1;
+    [FormerlySerializedAs("Health")] [Header("Config")]
+    public int health = 1;
     [Header("References")]
     public GameObject main;
     public GameObject insides;
@@ -18,7 +19,7 @@ public class Breakable : MonoBehaviour
     private void Awake()
     {
         _sprite = GetComponentInChildren<SpriteRenderer>();
-        _currentHealth = Health;
+        _currentHealth = health;
         _innerRigidbodies = insides.GetComponentsInChildren<Rigidbody2D>().ToList();
 
         insides.SetActive(false);
@@ -28,7 +29,7 @@ public class Breakable : MonoBehaviour
     {
         _currentHealth--;
 
-        if (_sprite != null) _sprite.color = Color.Lerp(Color.black, Color.white, (float)_currentHealth / Health);
+        if (_sprite != null) _sprite.color = Color.Lerp(Color.black, Color.white, (float)_currentHealth / health);
 
         if(_currentHealth > 0) return;
 

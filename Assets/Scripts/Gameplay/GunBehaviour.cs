@@ -36,7 +36,7 @@ namespace Gameplay
 
         private void Update()
         {
-            SetTimeScale();
+            HandleInput();
 
             // thin shoot line
             line.startWidth = Mathf.Lerp(line.startWidth, 0f, Time.deltaTime * 50f);
@@ -55,7 +55,7 @@ namespace Gameplay
             }
         }
 
-        private void SetTimeScale()
+        private void HandleInput()
         {
             var target = 1f;
 
