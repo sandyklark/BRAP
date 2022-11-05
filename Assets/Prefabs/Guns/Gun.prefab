@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108067565007628145}
   - component: {fileID: 2108067565007628144}
+  - component: {fileID: 1375560050}
   - component: {fileID: 2108067565007628151}
   - component: {fileID: 2108067565007628147}
   m_Layer: 0
@@ -59,6 +60,18 @@ MonoBehaviour:
   shells: {fileID: 2108067565986957494}
   line: {fileID: 2108067566340971014}
   barrelPoint: {fileID: 2108067566316627961}
+--- !u!114 &1375560050
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108067565007628149}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9871919eefd74b90abbbeea686833340, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!50 &2108067565007628151
 Rigidbody2D:
   serializedVersion: 4
@@ -67,7 +80,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2108067565007628149}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -100,46 +113,46 @@ CompositeCollider2D:
   m_ColliderPaths:
   - m_Collider: {fileID: 2108067566599561677}
     m_ColliderPaths:
-    - - X: 5819745
+    - - X: 5819744
         Y: 3741784
-      - X: -5225541
+      - X: -5225543
         Y: 3741784
-      - X: -5225541
+      - X: -5225543
         Y: 1001978
-      - X: 5819745
+      - X: 5819744
         Y: 1001978
   - m_Collider: {fileID: 2108067566300783694}
     m_ColliderPaths:
     - - X: -2718075
-        Y: 1331305
+        Y: 1331304
       - X: -5424721
-        Y: 1665177
+        Y: 1665176
       - X: -6111550
-        Y: -3902843
+        Y: -3902844
       - X: -3404905
-        Y: -4236715
+        Y: -4236716
   - m_Collider: {fileID: 2108067566297309336}
     m_ColliderPaths:
     - - X: -671588
         Y: 1043407
       - X: -2969991
-        Y: 1326921
+        Y: 1326920
       - X: -3222411
         Y: -719406
       - X: -924008
         Y: -1002920
   m_CompositePaths:
     m_Paths:
-    - - {x: -0.34051952, y: -0.42366812}
+    - - {x: -0.34051952, y: -0.4236682}
       - {x: -0.29745132, y: -0.0749984}
       - {x: -0.0923971, y: -0.100263104}
       - {x: -0.0676446, y: 0.1001978}
-      - {x: 0.5819745, y: 0.1002271}
-      - {x: 0.5819452, y: 0.3741784}
-      - {x: -0.5225541, y: 0.3741491}
-      - {x: -0.5225879, y: 0.1640649}
-      - {x: -0.5424758, y: 0.1664888}
-      - {x: -0.6111261, y: -0.390288}
+      - {x: 0.5819744, y: 0.1002271}
+      - {x: 0.5819451, y: 0.3741784}
+      - {x: -0.5225543, y: 0.3741491}
+      - {x: -0.52258813, y: 0.1640648}
+      - {x: -0.5424758, y: 0.1664887}
+      - {x: -0.6111261, y: -0.3902881}
   m_VertexDistance: 0.0005
   m_OffsetDistance: 0.00005
 --- !u!1 &2108067565557272220
@@ -14948,7 +14961,7 @@ LineRenderer:
       m_Curve:
       - serializedVersion: 3
         time: 0
-        value: 0.16923141
+        value: 0.36153793
         inSlope: 0
         outSlope: 0
         tangentMode: 0

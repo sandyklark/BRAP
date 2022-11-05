@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Effects;
 using UnityEngine;
 
@@ -24,6 +26,11 @@ namespace Gameplay
         private const float SmokeDurationSeconds = 0.5f;
         private const float HitForce = 20f;
         private const float KickForce = 20f;
+
+        public void Fire()
+        {
+            _shouldFire = true;
+        }
 
         private void Awake()
         {
@@ -67,7 +74,7 @@ namespace Gameplay
             if (Input.GetKeyUp(KeyCode.Space))
             {
                 target = 1f;
-                _shouldFire = true;
+                Fire();
             }
 
             Time.timeScale = Mathf.Lerp(Time.timeScale, target, Time.fixedUnscaledDeltaTime * 0.7f);
@@ -77,11 +84,13 @@ namespace Gameplay
         {
             if (!_shouldFire) return;
 
+            _reflectionCount = 0;
+            _linePositions = new List<Vector3>();
             _shouldFire = false;
 
             if (_isLaunched)
             {
-                Fire();
+                InternalFire();
             }
             else
             {
@@ -103,17 +112,22 @@ namespace Gameplay
             sparks.Emit(5);
         }
 
-        private void Fire()
+        private int _reflectionCount;
+        private void InternalFire(Ray? reflectionRay = null)
         {
             // raycast
-            var position = barrelPoint.position;
-            var hit = Physics2D.Raycast(position, barrelPoint.right, 100f, _layerMask);
+            var right = barrelPoint.right;
+            var position = reflectionRay?.origin ?? barrelPoint.position;
+            var direction = reflectionRay?.direction ?? right;
+            var hit = Physics2D.Raycast(position, direction, 100f, _layerMask);
+
+            _linePositions.AddRange(new List<Vector3> {position, hit.point});
             // particles
             ApplyParticleEffects(hit);
             // line
             ApplyLineEffects(position, hit);
             // physics
-            ApplyPhysics(hit);
+            ApplyPhysics(hit, direction);
             // slide
             // var pos = slide.localPosition;
             // pos.x += 0.5f;
@@ -121,7 +135,16 @@ namespace Gameplay
             // time
             _lastFiredTime = Time.realtimeSinceStartup;
             // camera shake
-            CameraShake.instance.Shake(2);
+            if(_reflectionCount == 0) CameraShake.instance.Shake(2);
+
+            if (hit.collider.TryGetComponent<Reflectable>(out var r))
+            {
+                _reflectionCount++;
+                if (_reflectionCount > 15) return;
+
+                var reflection = Vector3.Reflect(direction, hit.normal);
+                InternalFire(new Ray((Vector3)hit.point + reflection * 0.01f, reflection));
+            }
         }
 
         private void ApplyParticleEffects(RaycastHit2D hit)
@@ -133,19 +156,20 @@ namespace Gameplay
             shells.Emit(1);
         }
 
+        private List<Vector3> _linePositions = new List<Vector3>();
         private void ApplyLineEffects(Vector3 position, RaycastHit2D hit)
         {
-            line.positionCount = 2;
-            line.SetPositions(new Vector3[] { position, hit.point });
+            line.positionCount = _linePositions.Count;
+            line.SetPositions(_linePositions.ToArray());
             line.startWidth = 0.1f;
         }
 
-        private void ApplyPhysics(RaycastHit2D hit)
+        private void ApplyPhysics(RaycastHit2D hit, Vector3 direction)
         {
             if (hit.collider.attachedRigidbody != null)
             {
                 hit.collider.attachedRigidbody.AddForceAtPosition(
-                    barrelPoint.right * HitForce,
+                    direction * HitForce,
                     hit.point,
                     ForceMode2D.Impulse
                 );
@@ -153,19 +177,21 @@ namespace Gameplay
                 // shatter
                 if (hit.collider.TryGetComponent<Shatterable>(out var shatterable))
                 {
-                    shatterable.Shatter(barrelPoint.right * HitForce);
+                    shatterable.Shatter(direction * HitForce);
                 }
 
                 // break
                 if (hit.collider.transform.parent &&
                     hit.collider.transform.parent.TryGetComponent<Breakable>(out var breakable))
                 {
-                    breakable.Break(barrelPoint.right * HitForce);
+                    breakable.Break(direction * HitForce);
                 }
             }
 
+            if (_reflectionCount > 0) return;
+
             _rigidbody.AddForceAtPosition(
-                -barrelPoint.right * KickForce,
+                -direction * KickForce,
                 barrelPoint.position,
                 ForceMode2D.Impulse
             );
