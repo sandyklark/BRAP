@@ -150,6 +150,13 @@ namespace Gameplay
                     ForceMode2D.Impulse
                 );
 
+                // shatter
+                if (hit.collider.TryGetComponent<Shatterable>(out var shatterable))
+                {
+                    shatterable.Shatter(barrelPoint.right * HitForce);
+                }
+
+                // break
                 if (hit.collider.transform.parent &&
                     hit.collider.transform.parent.TryGetComponent<Breakable>(out var breakable))
                 {
