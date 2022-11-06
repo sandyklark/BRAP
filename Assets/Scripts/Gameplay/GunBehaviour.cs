@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using Effects;
 using UnityEngine;
+using Util;
 
 namespace Gameplay
 {
@@ -25,7 +26,6 @@ namespace Gameplay
         private int _reflectionCount;
         private float _lastFiredTime;
         private Rigidbody2D _rigidbody;
-        private float _targetTimescale = 1f;
         private float _currentRecoilAdjust = 0f;
         private List<Vector3> _linePositions = new List<Vector3>();
 
@@ -45,12 +45,12 @@ namespace Gameplay
 
         public void SlowTime()
         {
-            _targetTimescale = 0.2f;
+            TimeControl.Instance.SetTarget(0.2f);
         }
 
         public void ResumeTime()
         {
-            _targetTimescale = 1f;
+            TimeControl.Instance.SetTarget(1f);
         }
 
         private void Awake()
@@ -68,8 +68,6 @@ namespace Gameplay
 
             // thin shoot line
             line.startWidth = Mathf.Lerp(line.startWidth, 0f, Time.deltaTime * 50f);
-            // blend time
-            Time.timeScale = Mathf.Lerp(Time.timeScale, _targetTimescale, Time.unscaledDeltaTime * 2f);
             // recover recoil
             _currentRecoilAdjust = Mathf.Lerp(_currentRecoilAdjust, 0f, Time.deltaTime * recoilRecoveryStrength);
 
@@ -161,7 +159,7 @@ namespace Gameplay
             // time
             _lastFiredTime = Time.realtimeSinceStartup;
             // camera shake
-            if(_reflectionCount == 0) CameraShake.instance.Shake(2);
+            if(_reflectionCount == 0) CameraShake.Instance.Shake(2);
 
             if (hit.collider.TryGetComponent<Reflectable>(out var r))
             {

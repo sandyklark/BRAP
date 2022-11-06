@@ -54,11 +54,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30eac00edc59843aba996e818fc5c5bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  recoilAdjustStrength: 0.5
+  recoilRecoveryStrength: 2
+  line: {fileID: 2108067566340971014}
   smoke: {fileID: 2108067565557272217}
   flash: {fileID: 2108067566715135518}
   sparks: {fileID: 2108067565913918905}
   shells: {fileID: 2108067565986957494}
-  line: {fileID: 2108067566340971014}
   barrelPoint: {fileID: 2108067566316627961}
 --- !u!114 &1375560050
 MonoBehaviour:

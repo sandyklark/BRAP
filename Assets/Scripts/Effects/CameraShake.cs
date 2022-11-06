@@ -4,7 +4,7 @@ namespace Effects
 {
     public class CameraShake : MonoBehaviour
     {
-        public static CameraShake instance;
+        public static CameraShake Instance;
 
         public float maximumShake;
         public float shakeIntensity = 1f;
@@ -21,9 +21,9 @@ namespace Effects
 
         private void Awake()
         {
-            if (instance == null)
+            if (Instance == null)
             {
-                instance = this;
+                Instance = this;
             }
             else
             {

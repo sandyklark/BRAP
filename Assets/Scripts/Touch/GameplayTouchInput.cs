@@ -1,12 +1,13 @@
 using System;
 using Gameplay;
+using UI;
 using UnityEngine;
 
 namespace Touch
 {
     public class GameplayTouchInput : MonoBehaviour
     {
-        public SceneControl sceneControl;
+        public PauseMenu pauseMenu;
         public GunBehaviour gun;
 
         private Vector3 _lastPointer;
@@ -38,7 +39,7 @@ namespace Touch
 
             if (Input.touches.Length > 1)
             {
-                sceneControl.Reload();
+                pauseMenu.SetPause(true);
             }
         }
 
@@ -50,7 +51,7 @@ namespace Touch
 
         private void HandleRelease(UnityEngine.Touch touch)
         {
-            if (touch.position.y > _lastPointer.y + 2f) gun.ResetLaunch();
+            if (touch.position.y > _lastPointer.y + Screen.height * 0.25f) gun.ResetLaunch();
             gun.ResumeTime();
             gun.Fire();
         }

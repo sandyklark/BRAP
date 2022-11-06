@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Gameplay
 {
     public class Shatterable : MonoBehaviour
     {
+        public Action Shattered;
+
         private List<Breakable> _breakables;
         private List<Rigidbody2D> _childRigidbodies;
 
@@ -23,6 +27,8 @@ namespace Gameplay
                 b.transform.parent = transform.parent;
                 b.enabled = true;
             });
+
+            Shattered?.Invoke();
 
             Destroy(gameObject);
         }

@@ -1,20 +1,22 @@
-using System.Drawing;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneControl : MonoBehaviour
+namespace Util
 {
-
-    private void Update()
+    public class SceneControl : MonoBehaviour
     {
-        if (Input.GetKeyDown(KeyCode.R))
+
+        private void Update()
         {
-            Reload();
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                Reload();
+            }
         }
-    }
 
-    public void Reload()
-    {
-        SceneManager.LoadScene(0);
+        public void Reload()
+        {
+            SceneManager.LoadScene(0);
+        }
     }
 }
