@@ -9,6 +9,8 @@ namespace Touch
         public SceneControl sceneControl;
         public GunBehaviour gun;
 
+        private Vector3 _lastPointer;
+
         private void Update()
         {
             if (gun == null) return;
@@ -19,11 +21,10 @@ namespace Touch
             switch (touch.phase)
             {
                 case TouchPhase.Began:
-                    gun.SlowTime();
+                    HandleTouch(touch);
                     break;
                 case TouchPhase.Ended:
-                    gun.ResumeTime();
-                    gun.Fire();
+                    HandleRelease(touch);
                     break;
                 case TouchPhase.Moved:
                     break;
@@ -39,6 +40,19 @@ namespace Touch
             {
                 sceneControl.Reload();
             }
+        }
+
+        private void HandleTouch(UnityEngine.Touch touch)
+        {
+            _lastPointer = touch.position;
+            gun.SlowTime();
+        }
+
+        private void HandleRelease(UnityEngine.Touch touch)
+        {
+            if (touch.position.y > _lastPointer.y + 2f) gun.ResetLaunch();
+            gun.ResumeTime();
+            gun.Fire();
         }
     }
 }

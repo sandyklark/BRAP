@@ -7,31 +7,40 @@ namespace Gameplay
 {
     public class GunBehaviour : MonoBehaviour
     {
+        [Header("Config")]
+        public float recoilAdjustStrength = 1f;
+        public float recoilRecoveryStrength = 1f;
+
+        [Header("References")]
+        public LineRenderer line;
         public ParticleSystem smoke;
         public ParticleSystem flash;
         public ParticleSystem sparks;
         public ParticleSystem shells;
-        public LineRenderer line;
-        // public Transform slide;
         public Transform barrelPoint;
 
         private int _layerMask = 0;
-        private Rigidbody2D _rigidbody;
-        private float _lastFiredTime;
         private bool _shouldFire;
         private bool _isLaunched;
-        private List<Vector3> _linePositions = new List<Vector3>();
+        private int _reflectionCount;
+        private float _lastFiredTime;
+        private Rigidbody2D _rigidbody;
         private float _targetTimescale = 1f;
+        private float _currentRecoilAdjust = 0f;
+        private List<Vector3> _linePositions = new List<Vector3>();
 
-        // private Vector3 _slidePos;
-
-        private const float SmokeDurationSeconds = 0.5f;
         private const float HitForce = 20f;
         private const float KickForce = 20f;
+        private const float SmokeDurationSeconds = 0.5f;
 
         public void Fire()
         {
             _shouldFire = true;
+        }
+
+        public void ResetLaunch()
+        {
+            _isLaunched = false;
         }
 
         public void SlowTime()
@@ -61,8 +70,8 @@ namespace Gameplay
             line.startWidth = Mathf.Lerp(line.startWidth, 0f, Time.deltaTime * 50f);
             // blend time
             Time.timeScale = Mathf.Lerp(Time.timeScale, _targetTimescale, Time.unscaledDeltaTime * 2f);
-            // return slide
-            // slide.transform.localPosition = Vector3.Lerp(slide.transform.localPosition, _slidePos, Time.deltaTime * 10f);
+            // recover recoil
+            _currentRecoilAdjust = Mathf.Lerp(_currentRecoilAdjust, 0f, Time.deltaTime * recoilRecoveryStrength);
 
             // smoke emission
             var emission = smoke.emission;
@@ -79,6 +88,11 @@ namespace Gameplay
 
         private void HandleInput()
         {
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                Launch();
+            }
+
             if (Input.GetKey(KeyCode.Space))
             {
                 SlowTime();
@@ -114,9 +128,14 @@ namespace Gameplay
         {
             _isLaunched = true;
             _rigidbody.constraints = RigidbodyConstraints2D.None;
-            _rigidbody.AddForceAtPosition(
-                barrelPoint.up * KickForce * 0.6f,
-                barrelPoint.position + -barrelPoint.right * 0.4f,
+
+            _rigidbody.AddForce(
+                Vector3.up * KickForce * 0.7f,
+                ForceMode2D.Impulse
+            );
+
+            _rigidbody.AddTorque(
+                3f,
                 ForceMode2D.Impulse
             );
 
@@ -124,7 +143,6 @@ namespace Gameplay
             sparks.Emit(5);
         }
 
-        private int _reflectionCount;
         private void InternalFire(Ray? reflectionRay = null)
         {
             // raycast
@@ -140,10 +158,6 @@ namespace Gameplay
             ApplyLineEffects(position, hit);
             // physics
             ApplyPhysics(hit, direction);
-            // slide
-            // var pos = slide.localPosition;
-            // pos.x += 0.5f;
-            // slide.localPosition = pos;
             // time
             _lastFiredTime = Time.realtimeSinceStartup;
             // camera shake
@@ -157,6 +171,9 @@ namespace Gameplay
                 var reflection = Vector3.Reflect(direction, hit.normal);
                 InternalFire(new Ray((Vector3)hit.point + reflection * 0.01f, reflection));
             }
+
+            _currentRecoilAdjust += recoilAdjustStrength;
+            if (_currentRecoilAdjust > 1f) _currentRecoilAdjust = 1f;
         }
 
         private void ApplyParticleEffects(RaycastHit2D hit)
@@ -202,8 +219,11 @@ namespace Gameplay
 
             if (_reflectionCount > 0) return;
 
+            var recoil = -direction * KickForce;
+            var recoilAdjusted = recoil * (1f - _currentRecoilAdjust);
+
             _rigidbody.AddForceAtPosition(
-                -direction * KickForce,
+                 recoilAdjusted,
                 barrelPoint.position,
                 ForceMode2D.Impulse
             );
