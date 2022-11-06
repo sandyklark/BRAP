@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 1375560050}
   - component: {fileID: 2108067565007628151}
   - component: {fileID: 2108067565007628147}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -166,7 +166,7 @@ GameObject:
   - component: {fileID: 2108067565557272223}
   - component: {fileID: 2108067565557272217}
   - component: {fileID: 2108067565557272222}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Smoke
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4976,7 +4976,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108067565661073807}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Gunbody
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5013,7 +5013,7 @@ GameObject:
   - component: {fileID: 2108067565913918911}
   - component: {fileID: 2108067565913918905}
   - component: {fileID: 2108067565913918910}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9825,7 +9825,7 @@ GameObject:
   - component: {fileID: 2108067565986957492}
   - component: {fileID: 2108067565986957494}
   - component: {fileID: 2108067565986957495}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Shells
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14637,7 +14637,7 @@ GameObject:
   - component: {fileID: 2108067566297309337}
   - component: {fileID: 2108067566297309339}
   - component: {fileID: 2108067566297309336}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: collider (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14748,7 +14748,7 @@ GameObject:
   - component: {fileID: 2108067566300783695}
   - component: {fileID: 2108067566300783689}
   - component: {fileID: 2108067566300783694}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: collider (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14857,7 +14857,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2108067566316627961}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14889,7 +14889,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108067566340971015}
   - component: {fileID: 2108067566340971014}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Line
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15019,7 +15019,7 @@ GameObject:
   - component: {fileID: 2108067566599561682}
   - component: {fileID: 2108067566599561676}
   - component: {fileID: 2108067566599561677}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: collider
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -15130,7 +15130,7 @@ GameObject:
   - component: {fileID: 2108067566715135516}
   - component: {fileID: 2108067566715135518}
   - component: {fileID: 2108067566715135519}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Flash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19941,7 +19941,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2108067566867663593}
   - component: {fileID: 2108067566867663592}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: Sprite
   m_TagString: Untagged
   m_Icon: {fileID: 0}
