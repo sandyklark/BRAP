@@ -9,7 +9,12 @@ public class SceneControl : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
-            SceneManager.LoadScene(0);
+            Reload();
         }
+    }
+
+    public void Reload()
+    {
+        SceneManager.LoadScene(0);
     }
 }

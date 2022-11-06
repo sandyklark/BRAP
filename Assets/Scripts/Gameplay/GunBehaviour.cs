@@ -20,6 +20,8 @@ namespace Gameplay
         private float _lastFiredTime;
         private bool _shouldFire;
         private bool _isLaunched;
+        private List<Vector3> _linePositions = new List<Vector3>();
+        private float _targetTimescale = 1f;
 
         // private Vector3 _slidePos;
 
@@ -30,6 +32,16 @@ namespace Gameplay
         public void Fire()
         {
             _shouldFire = true;
+        }
+
+        public void SlowTime()
+        {
+            _targetTimescale = 0.2f;
+        }
+
+        public void ResumeTime()
+        {
+            _targetTimescale = 1f;
         }
 
         private void Awake()
@@ -47,6 +59,8 @@ namespace Gameplay
 
             // thin shoot line
             line.startWidth = Mathf.Lerp(line.startWidth, 0f, Time.deltaTime * 50f);
+            // blend time
+            Time.timeScale = Mathf.Lerp(Time.timeScale, _targetTimescale, Time.unscaledDeltaTime * 2f);
             // return slide
             // slide.transform.localPosition = Vector3.Lerp(slide.transform.localPosition, _slidePos, Time.deltaTime * 10f);
 
@@ -60,24 +74,22 @@ namespace Gameplay
             {
                 emission.rateOverTime = 0;
             }
+
         }
 
         private void HandleInput()
         {
-            var target = 1f;
-
             if (Input.GetKey(KeyCode.Space))
             {
-                target = 0.2f;
+                SlowTime();
             }
 
             if (Input.GetKeyUp(KeyCode.Space))
             {
-                target = 1f;
+                ResumeTime();
                 Fire();
             }
 
-            Time.timeScale = Mathf.Lerp(Time.timeScale, target, Time.fixedUnscaledDeltaTime * 0.7f);
         }
 
         private void FixedUpdate()
@@ -156,7 +168,7 @@ namespace Gameplay
             shells.Emit(1);
         }
 
-        private List<Vector3> _linePositions = new List<Vector3>();
+
         private void ApplyLineEffects(Vector3 position, RaycastHit2D hit)
         {
             line.positionCount = _linePositions.Count;
