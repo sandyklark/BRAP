@@ -7,7 +7,7 @@ namespace Gameplay.Quest
 {
     public class QuestHub : MonoBehaviour
     {
-        public Action QuestCompleted;
+        public Action<Quest> QuestCompleted;
 
         public List<Quest> quests;
 
@@ -19,7 +19,7 @@ namespace Gameplay.Quest
 
         private void OnQuestComplete(Quest quest)
         {
-            QuestCompleted?.Invoke();
+            QuestCompleted?.Invoke(quest);
         }
     }
 }

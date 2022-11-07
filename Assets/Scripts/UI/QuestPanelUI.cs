@@ -37,7 +37,7 @@ namespace UI
             }
         }
 
-        private void OnQuestCompleted()
+        private void OnQuestCompleted(Quest quest)
         {
             UpdateQuestItems();
         }

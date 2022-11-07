@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4372611904193145301}
   - component: {fileID: 4372611904193145300}
   m_Layer: 5
-  m_Name: QuestPanel
+  m_Name: QuestItem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
