@@ -232,7 +232,7 @@ PlayerSettings:
   appleDeveloperTeamID: K8GLA7VPM8
   iOSManualSigningProvisioningProfileID: 6a2ee837-d334-4c95-95a2-aa4564dd3235
   tvOSManualSigningProvisioningProfileID: 
-  iOSManualSigningProvisioningProfileType: 1
+  iOSManualSigningProvisioningProfileType: 0
   tvOSManualSigningProvisioningProfileType: 0
   appleEnableAutomaticSigning: 1
   iOSRequireARKit: 0

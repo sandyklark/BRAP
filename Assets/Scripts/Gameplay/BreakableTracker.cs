@@ -7,6 +7,8 @@ namespace Gameplay
 {
     public class BreakableTracker : MonoBehaviour
     {
+        public int PercentBroken => (int)decimal.Round((decimal)((float)_currentBroken / _breakables.Count * 100));
+
         public TextMeshProUGUI percentText;
 
         private List<Breakable> _breakables;
@@ -28,7 +30,7 @@ namespace Gameplay
         {
             if (percentText)
             {
-                percentText.text = $"{decimal.Round((decimal)((float)_currentBroken / _breakables.Count * 100))}%";
+                percentText.text = $"Destruction: {PercentBroken}%";
             }
         }
     }

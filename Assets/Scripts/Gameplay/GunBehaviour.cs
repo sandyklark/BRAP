@@ -20,14 +20,17 @@ namespace Gameplay
         public ParticleSystem shells;
         public Transform barrelPoint;
 
-        private int _layerMask = 0;
+        private int _layerMask;
         private bool _shouldFire;
         private bool _isLaunched;
         private int _reflectionCount;
         private float _lastFiredTime;
         private Rigidbody2D _rigidbody;
-        private float _currentRecoilAdjust = 0f;
-        private List<Vector3> _linePositions = new List<Vector3>();
+        private float _currentRecoilAdjust;
+        private List<Vector3> _linePositions = new();
+
+        private float _lastShotDistance;
+        private float _lastShotReflectedDistance;
 
         private const float HitForce = 20f;
         private const float KickForce = 20f;
@@ -108,13 +111,19 @@ namespace Gameplay
         {
             if (!_shouldFire) return;
 
-            _reflectionCount = 0;
-            _linePositions = new List<Vector3>();
             _shouldFire = false;
+            _reflectionCount = 0;
+            _lastShotDistance = _lastShotReflectedDistance = 0f;
+            _linePositions = new List<Vector3>();
 
             if (_isLaunched)
             {
                 InternalFire();
+
+                var dist = decimal.Round((decimal)(_lastShotDistance + _lastShotReflectedDistance), 2);
+                var initial = decimal.Round((decimal)_lastShotDistance, 2);
+                var deflected = decimal.Round((decimal)_lastShotReflectedDistance, 2);
+                Debug.Log($"Last shot was {dist}m - {initial}m Initial shot + {deflected}m ReflectedShots");
             }
             else
             {
@@ -170,6 +179,20 @@ namespace Gameplay
                 InternalFire(new Ray((Vector3)hit.point + reflection * 0.01f, reflection));
             }
 
+
+            if (reflectionRay == null)
+            {
+                _lastShotDistance += Vector3.Distance(position, hit.point);
+                AdjustRecoil();
+            }
+            else
+            {
+                _lastShotReflectedDistance += Vector3.Distance(position, hit.point);
+            }
+        }
+
+        private void AdjustRecoil()
+        {
             _currentRecoilAdjust += recoilAdjustStrength;
             if (_currentRecoilAdjust > 1f) _currentRecoilAdjust = 1f;
         }
