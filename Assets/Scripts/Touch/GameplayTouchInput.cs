@@ -2,6 +2,7 @@ using System;
 using Gameplay;
 using UI;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace Touch
 {
@@ -17,6 +18,7 @@ namespace Touch
             if (gun == null) return;
 
             if (Input.touches.Length == 0) return;
+            if (Time.timeScale < 0.05f) return;
 
             var touch = Input.touches[0];
             switch (touch.phase)

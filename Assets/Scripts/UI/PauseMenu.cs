@@ -7,8 +7,6 @@ namespace UI
     {
         public GameObject pauseUI;
 
-        private bool _paused;
-
         public void SetPause(bool pause)
         {
             TimeControl.Instance.SetPause(pause);
