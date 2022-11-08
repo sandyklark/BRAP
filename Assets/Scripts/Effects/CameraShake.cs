@@ -18,7 +18,6 @@ namespace Effects
             _currentShake += amount;
             if (_currentShake > maximumShake) _currentShake = maximumShake;
         }
-
         private void Awake()
         {
             if (Instance == null)

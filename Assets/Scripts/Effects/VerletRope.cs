@@ -43,7 +43,7 @@ namespace Effects
         private void Simulate()
         {
             // SIMULATION
-            var forceGravity = new Vector2(0f, -0.08f);
+            var forceGravity = new Vector2(0f, 0f);
 
             for (var i = 1; i < segmentCount; i++)
             {
@@ -52,6 +52,7 @@ namespace Effects
                 firstSegment.posOld = firstSegment.posNow;
                 firstSegment.posNow += velocity;
                 firstSegment.posNow += forceGravity * Time.fixedDeltaTime;
+                firstSegment.posNow = Vector3.Lerp(firstSegment.posNow, endTarget.position, (float)i / segmentCount);
                 _ropeSegments[i] = firstSegment;
             }
 

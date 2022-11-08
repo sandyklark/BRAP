@@ -3,9 +3,8 @@ using UnityEngine.SceneManagement;
 
 namespace Util
 {
-    public class SceneControl : MonoBehaviour
+    public class ReloadCurrentScene : MonoBehaviour
     {
-
         private void Update()
         {
             if (Input.GetKeyDown(KeyCode.R))
@@ -16,7 +15,7 @@ namespace Util
 
         public void Reload()
         {
-            SceneManager.LoadScene(0);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
     }
 }
