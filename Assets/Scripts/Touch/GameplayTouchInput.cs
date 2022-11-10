@@ -2,20 +2,25 @@ using System;
 using Gameplay;
 using UI;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 namespace Touch
 {
     public class GameplayTouchInput : MonoBehaviour
     {
         public PauseMenu pauseMenu;
-        public GunBehaviour gun;
+        public GunSpawn gunSpawn;
 
-        private Vector3 _lastPointer;
+        private GunBehaviour _gun;
+        private Vector2 _lastPointer;
+
+        private void Awake()
+        {
+            gunSpawn.Spawned += gun => _gun = gun;
+        }
 
         private void Update()
         {
-            if (gun == null) return;
+            if (_gun == null) return;
 
             if (Input.touches.Length == 0) return;
             if (Time.timeScale < 0.05f) return;
@@ -48,14 +53,18 @@ namespace Touch
         private void HandleTouch(UnityEngine.Touch touch)
         {
             _lastPointer = touch.position;
-            gun.SlowTime();
+            _gun.SlowTime();
         }
 
         private void HandleRelease(UnityEngine.Touch touch)
         {
-            if (touch.position.y > _lastPointer.y + Screen.height * 0.25f) gun.ResetLaunch();
-            gun.ResumeTime();
-            gun.Fire();
+            if (touch.position.y > _lastPointer.y + Screen.height * 0.25f)
+            {
+                var direction = (touch.position - _lastPointer).normalized;
+                _gun.ResetLaunch(direction);
+            }
+            _gun.ResumeTime();
+            _gun.Fire();
         }
     }
 }

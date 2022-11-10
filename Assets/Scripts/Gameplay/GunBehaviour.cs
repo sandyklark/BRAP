@@ -1,7 +1,5 @@
-using System;
 using System.Collections.Generic;
 using Effects;
-using TMPro;
 using UnityEngine;
 using Util;
 
@@ -36,14 +34,16 @@ namespace Gameplay
         private const float HitForce = 20f;
         private const float KickForce = 20f;
         private const float SmokeDurationSeconds = 0.5f;
+        private Vector2 _launchDirection = Vector2.up;
 
         public void Fire()
         {
             _shouldFire = true;
         }
 
-        public void ResetLaunch()
+        public void ResetLaunch(Vector2 launchVector)
         {
+            _launchDirection = launchVector;
             _isLaunched = false;
         }
 
@@ -59,7 +59,6 @@ namespace Gameplay
 
         private void Awake()
         {
-            // _slidePos = slide.localPosition;
             _rigidbody = GetComponent<Rigidbody2D>();
             _layerMask = LayerMask.GetMask("Default", "Surfaces");
 
@@ -138,7 +137,7 @@ namespace Gameplay
             _rigidbody.constraints = RigidbodyConstraints2D.None;
 
             _rigidbody.AddForce(
-                Vector3.up * KickForce * 0.7f,
+                _launchDirection * KickForce * 0.7f,
                 ForceMode2D.Impulse
             );
 
