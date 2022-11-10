@@ -10,6 +10,7 @@ namespace Gameplay
         [Header("Config")]
         public float recoilAdjustStrength = 1f;
         public float recoilRecoveryStrength = 1f;
+        public float launchCooldownSeconds = 1f;
 
         [Header("References")]
         public LineRenderer line;
@@ -30,6 +31,7 @@ namespace Gameplay
 
         private float _lastShotDistance;
         private float _lastShotReflectedDistance;
+        private float _lastLaunchTime;
 
         private const float HitForce = 20f;
         private const float KickForce = 20f;
@@ -94,12 +96,12 @@ namespace Gameplay
                 Launch();
             }
 
-            if (Input.GetKey(KeyCode.Space))
+            if (Input.GetKey(KeyCode.Space) || Input.GetMouseButtonDown(0))
             {
                 SlowTime();
             }
 
-            if (Input.GetKeyUp(KeyCode.Space))
+            if (Input.GetKeyUp(KeyCode.Space) || Input.GetMouseButtonUp(0))
             {
                 ResumeTime();
                 Fire();
@@ -133,7 +135,10 @@ namespace Gameplay
 
         private void Launch()
         {
+            if (Time.time < _lastLaunchTime + launchCooldownSeconds) return;
+
             _isLaunched = true;
+            _lastLaunchTime = Time.time;
             _rigidbody.constraints = RigidbodyConstraints2D.None;
 
             _rigidbody.AddForce(
