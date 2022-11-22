@@ -1,5 +1,6 @@
 using System;
 using Gameplay;
+using Gun;
 using UI;
 using UnityEngine;
 
@@ -12,15 +13,20 @@ namespace Touch
 
         private GunBehaviour _gun;
         private Vector2 _lastPointer;
+        private bool _hasGun;
 
         private void Awake()
         {
-            gunSpawn.Spawned += gun => _gun = gun;
+            gunSpawn.Spawned += gun =>
+            {
+                _gun = gun;
+                _hasGun = true;
+            };
         }
 
         private void Update()
         {
-            if (_gun == null) return;
+            if (!_hasGun) return;
 
             if (Input.touches.Length == 0) return;
             if (Time.timeScale < 0.05f) return;

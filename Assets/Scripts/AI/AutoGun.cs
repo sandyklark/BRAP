@@ -1,5 +1,6 @@
 using System;
 using Gameplay;
+using Gun;
 using UnityEngine;
 
 namespace AI

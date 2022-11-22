@@ -19,7 +19,7 @@ namespace UI
 
         private void Start()
         {
-            for (var i = 0; i < questHub.quests.Count; i++)
+            for (var i = 0; i < questHub.Quests.Count; i++)
             {
                 _questItems.Add(Instantiate(questItemPrefab, questContainer).GetComponent<QuestItem>());
             }
@@ -29,9 +29,9 @@ namespace UI
 
         private void UpdateQuestItems()
         {
-            for (var i = 0; i < questHub.quests.Count; i++)
+            for (var i = 0; i < questHub.Quests.Count; i++)
             {
-                var q = questHub.quests[i];
+                var q = questHub.Quests[i];
                 _questItems[i].SetDescription(q.Description);
                 _questItems[i].SetComplete(q.IsComplete);
             }

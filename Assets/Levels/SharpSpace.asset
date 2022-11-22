@@ -14,5 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: A Sharp Space
   description: Ouch
-  sceneName: SharpSpace
+  scene: {fileID: 102900000, guid: 01c18951f210b4299a65431878c59396, type: 3}
   thumbnail: {fileID: 21300000, guid: 2e853c53061d3456e97a3c46d001b07a, type: 3}
+  timeLimitSeconds: 40
+  ammoLimit: 10

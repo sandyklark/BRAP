@@ -9,12 +9,12 @@ namespace Gameplay.Quest
     {
         public Action<Quest> QuestCompleted;
 
-        public List<Quest> quests;
+        public List<Quest> Quests { get; private set; }
 
         private void Awake()
         {
-            quests = GetComponentsInChildren<Quest>().ToList();
-            quests.ForEach(q => q.Complete += OnQuestComplete);
+            Quests = FindObjectsOfType<Quest>().ToList();
+            Quests.ForEach(q => q.Complete += OnQuestComplete);
         }
 
         private void OnQuestComplete(Quest quest)

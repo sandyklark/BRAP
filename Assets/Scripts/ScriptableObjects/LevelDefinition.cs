@@ -1,4 +1,5 @@
 using System;
+using UnityEditor;
 using UnityEngine;
 
 namespace ScriptableObjects
@@ -9,7 +10,9 @@ namespace ScriptableObjects
     {
         public string title;
         public string description;
-        public string sceneName;
+        public SceneAsset scene;
         public Sprite thumbnail;
+        public float timeLimitSeconds;
+        public int ammoLimit;
     }
 }

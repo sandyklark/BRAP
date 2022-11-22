@@ -16,7 +16,7 @@ namespace Gameplay
 
         private void Awake()
         {
-            _breakables = GetComponentsInChildren<Breakable>().ToList();
+            _breakables = FindObjectsOfType<Breakable>().ToList();
 
             _breakables.ForEach(b => b.Broken += OnBreak);
         }

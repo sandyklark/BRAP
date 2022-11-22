@@ -1,9 +1,10 @@
 using System.Collections.Generic;
 using Effects;
+using Gameplay;
 using UnityEngine;
 using Util;
 
-namespace Gameplay
+namespace Gun
 {
     public class GunBehaviour : MonoBehaviour
     {
@@ -91,6 +92,8 @@ namespace Gameplay
 
         private void HandleInput()
         {
+            if (Time.timeScale < 0.05f) return;
+
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
                 Launch();
@@ -162,6 +165,9 @@ namespace Gameplay
             var position = reflectionRay?.origin ?? barrelPoint.position;
             var direction = reflectionRay?.direction ?? right;
             var hit = Physics2D.Raycast(position, direction, 100f, _layerMask);
+
+            if (hit.collider == null) return;
+
 
             _linePositions.AddRange(new List<Vector3> {position, hit.point});
             // particles
