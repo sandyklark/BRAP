@@ -1,13 +1,28 @@
+using System;
 using System.Collections.Generic;
 using Effects;
 using Gameplay;
 using UnityEngine;
 using Util;
+using Random = UnityEngine.Random;
 
 namespace Gun
 {
+    [Serializable]
+    public struct ShotInfo
+    {
+        public bool hitTarget;
+        public float shotDistance;
+        public Vector3 hitPoint;
+    }
+
     public class GunBehaviour : MonoBehaviour
     {
+        public Action<ShotInfo> ShotFired;
+        public Action<Vector3> Reflection;
+        public Action HitSurface;
+        public Action TipTap;
+
         [Header("Config")]
         public float recoilAdjustStrength = 1f;
         public float recoilRecoveryStrength = 1f;
@@ -27,12 +42,17 @@ namespace Gun
         private int _reflectionCount;
         private float _lastFiredTime;
         private Rigidbody2D _rigidbody;
+        private GunTip _gunTip;
         private float _currentRecoilAdjust;
         private List<Vector3> _linePositions = new();
 
         private float _lastShotDistance;
         private float _lastShotReflectedDistance;
         private float _lastLaunchTime;
+
+        private float _tipTapSeconds;
+        private bool _isTipTapping;
+        private const float TipTapThresholdSeconds = 0.3f;
 
         private const float HitForce = 20f;
         private const float KickForce = 20f;
@@ -62,10 +82,13 @@ namespace Gun
 
         private void Awake()
         {
+            _gunTip = GetComponentInChildren<GunTip>();
             _rigidbody = GetComponent<Rigidbody2D>();
             _layerMask = LayerMask.GetMask("Default", "Surfaces");
 
             _rigidbody.constraints = RigidbodyConstraints2D.FreezeAll;
+
+            _gunTip.TipTap += OnTipTap;
         }
 
         private void Update()
@@ -88,6 +111,7 @@ namespace Gun
                 emission.rateOverTime = 0;
             }
 
+            ProcessTipTap();
         }
 
         private void HandleInput()
@@ -124,11 +148,6 @@ namespace Gun
             if (_isLaunched)
             {
                 InternalFire();
-
-                var dist = decimal.Round((decimal)(_lastShotDistance + _lastShotReflectedDistance), 2);
-                var initial = decimal.Round((decimal)_lastShotDistance, 2);
-                var deflected = decimal.Round((decimal)_lastShotReflectedDistance, 2);
-                Debug.Log($"Last shot was {dist}m - {initial}m Initial shot + {deflected}m ReflectedShots");
             }
             else
             {
@@ -168,18 +187,20 @@ namespace Gun
 
             if (hit.collider == null) return;
 
-
             _linePositions.AddRange(new List<Vector3> {position, hit.point});
             // particles
             ApplyParticleEffects(hit);
             // line
             ApplyLineEffects(position, hit);
             // physics
-            ApplyPhysics(hit, direction);
+            var hitTarget = ApplyPhysics(hit, direction);
             // time
             _lastFiredTime = Time.realtimeSinceStartup;
             // camera shake
-            if(_reflectionCount == 0) CameraShake.Instance.Shake(2);
+            if (_reflectionCount == 0)
+            {
+                CameraShake.Instance.Shake(2);
+            }
 
             if (hit.collider.TryGetComponent<Reflectable>(out var r))
             {
@@ -188,13 +209,21 @@ namespace Gun
 
                 var reflection = Vector3.Reflect(direction, hit.normal);
                 InternalFire(new Ray((Vector3)hit.point + reflection * 0.01f, reflection));
-            }
 
+                Reflection?.Invoke(hit.point);
+            }
 
             if (reflectionRay == null)
             {
                 _lastShotDistance += Vector3.Distance(position, hit.point);
                 AdjustRecoil();
+
+                ShotFired?.Invoke(new ShotInfo
+                {
+                    hitTarget = hitTarget,
+                    shotDistance = _lastShotDistance,
+                    hitPoint = hit.point
+                });
             }
             else
             {
@@ -225,8 +254,10 @@ namespace Gun
             line.startWidth = 0.1f;
         }
 
-        private void ApplyPhysics(RaycastHit2D hit, Vector3 direction)
+        private bool ApplyPhysics(RaycastHit2D hit, Vector3 direction)
         {
+            var brokeTarget = false;
+
             if (hit.collider.attachedRigidbody != null)
             {
                 hit.collider.attachedRigidbody.AddForceAtPosition(
@@ -235,10 +266,12 @@ namespace Gun
                     ForceMode2D.Impulse
                 );
 
+                // TODO - use interface to join these
                 // shatter
                 if (hit.collider.TryGetComponent<Shatterable>(out var shatterable))
                 {
                     shatterable.Shatter(direction * HitForce);
+                    brokeTarget = true;
                 }
 
                 // break
@@ -246,10 +279,11 @@ namespace Gun
                     hit.collider.transform.parent.TryGetComponent<Breakable>(out var breakable))
                 {
                     breakable.Break(direction * HitForce);
+                    brokeTarget = true;
                 }
             }
 
-            if (_reflectionCount > 0) return;
+            if (_reflectionCount > 0) return brokeTarget;
 
             var recoil = -direction * KickForce;
             var recoilAdjusted = recoil * (1f - _currentRecoilAdjust);
@@ -259,6 +293,36 @@ namespace Gun
                 barrelPoint.position,
                 ForceMode2D.Impulse
             );
+
+            return brokeTarget;
+        }
+
+        private void OnCollisionEnter2D(Collision2D col)
+        {
+            if (col.otherCollider.TryGetComponent<GunTip>(out var tip)) return;
+
+            HitSurface?.Invoke();
+            _tipTapSeconds = 0f;
+            _isTipTapping = false;
+        }
+
+        private void OnTipTap()
+        {
+            _tipTapSeconds = 0f;
+            _isTipTapping = true;
+        }
+
+        private void ProcessTipTap()
+        {
+            if (!_isTipTapping) return;
+
+            _tipTapSeconds += Time.deltaTime;
+
+            if (!(_tipTapSeconds >= TipTapThresholdSeconds)) return;
+
+            _tipTapSeconds = 0;
+            _isTipTapping = false;
+            TipTap?.Invoke();
         }
     }
 }

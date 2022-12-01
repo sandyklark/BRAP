@@ -12,8 +12,8 @@ namespace Touch
         public GunSpawn gunSpawn;
 
         private GunBehaviour _gun;
-        private Vector2 _lastPointer;
         private bool _hasGun;
+        private Vector2 _lastPointer;
 
         private void Awake()
         {

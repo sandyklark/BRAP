@@ -966,6 +966,50 @@ BoxCollider2D:
   m_CorrespondingSourceObject: {fileID: 5013738740692122979, guid: 9bd731ae986bf44bd8dc85861e2286b4, type: 3}
   m_PrefabInstance: {fileID: 1733774872}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &335638439
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 335638441}
+  - component: {fileID: 335638440}
+  m_Layer: 0
+  m_Name: TokenWallet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &335638440
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335638439}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 78d5feae25dd84cbe9c124f19deb0db3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &335638441
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335638439}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.9869886, y: 0.4544891, z: 0.46293843}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &357788226 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3236780985867192934, guid: f4d4ccfcfe6f44e5b8712bdcb9fe5cc7, type: 3}

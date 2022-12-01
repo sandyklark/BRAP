@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e69b913f1431b4fcab890dbf2bcb1fc0, type: 3}
+  m_Name: PointsConfig
+  m_EditorClassIdentifier: 
+  flip:
+    name: FLIP
+    color: {r: 0.5473456, g: 1, b: 0.3915094, a: 0}
+    value: 10
+  tipTap:
+    name: TIP TAP
+    color: {r: 0.18623178, g: 0.8773585, b: 0.74365526, a: 0}
+    value: 50
+  tipStall:
+    name: TIP STALL
+    color: {r: 0.67301357, g: 0.3254717, b: 1, a: 0}
+    value: 20
+  onTarget:
+    name: BREAK
+    color: {r: 1, g: 0.3066038, b: 0.3066038, a: 0}
+    value: 20
+  reflect:
+    name: REFLECT
+    color: {r: 0.9150943, g: 0.9150943, b: 0.9150943, a: 0}
+    value: 5
+  proximity:
+    name: PROXIMITY
+    color: {r: 1, g: 0.69839483, b: 0.2783019, a: 0}
+    value: 5
+  pointBlank:
+    name: POINT BLANK
+    color: {r: 0.99607843, g: 0.53569394, b: 0.27843136, a: 0}
+    value: 10
+  hover:
+    name: HOVER
+    color: {r: 1, g: 0.3726415, b: 0.9127039, a: 0}
+    value: 20
