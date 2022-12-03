@@ -16,11 +16,10 @@ namespace ScriptableObjects
     {
         public PointsItem flip;
         public PointsItem tipTap;
-        public PointsItem tipStall;
         public PointsItem onTarget;
         public PointsItem reflect;
         public PointsItem proximity;
         public PointsItem pointBlank;
-        public PointsItem hover;
+        public PointsItem bigAir;
     }
 }

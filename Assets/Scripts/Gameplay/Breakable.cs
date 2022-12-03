@@ -40,11 +40,10 @@ namespace Gameplay
             if(_currentHealth > 0) return;
 
             main.SetActive(false);
-            insides.transform.parent = transform;
-            insides.SetActive(true);
 
             foreach (var innerRigidbody in _innerRigidbodies)
             {
+                innerRigidbody.transform.parent = transform.parent;
                 innerRigidbody.AddForce(force, ForceMode2D.Impulse);
                 innerRigidbody.AddTorque(Random.Range(-1f, 1f) * force.magnitude / 5f, ForceMode2D.Impulse);
             }

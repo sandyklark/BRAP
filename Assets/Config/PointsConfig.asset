@@ -19,13 +19,9 @@ MonoBehaviour:
   tipTap:
     name: TIP TAP
     color: {r: 0.18623178, g: 0.8773585, b: 0.74365526, a: 0}
-    value: 50
-  tipStall:
-    name: TIP STALL
-    color: {r: 0.67301357, g: 0.3254717, b: 1, a: 0}
-    value: 20
+    value: 35
   onTarget:
-    name: BREAK
+    name: ' '
     color: {r: 1, g: 0.3066038, b: 0.3066038, a: 0}
     value: 20
   reflect:
@@ -40,7 +36,7 @@ MonoBehaviour:
     name: POINT BLANK
     color: {r: 0.99607843, g: 0.53569394, b: 0.27843136, a: 0}
     value: 10
-  hover:
-    name: HOVER
-    color: {r: 1, g: 0.3726415, b: 0.9127039, a: 0}
-    value: 20
+  bigAir:
+    name: BIG AIR
+    color: {r: 0.8146794, g: 0.22459061, b: 0.9716981, a: 0}
+    value: 50

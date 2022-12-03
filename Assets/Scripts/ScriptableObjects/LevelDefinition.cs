@@ -10,7 +10,7 @@ namespace ScriptableObjects
     {
         public string title;
         public string description;
-        public SceneAsset scene;
+        public string sceneName;
         public Sprite thumbnail;
         public float timeLimitSeconds;
         public int ammoLimit;

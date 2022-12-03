@@ -2,6 +2,7 @@ using System;
 using Effects;
 using Gun;
 using ScriptableObjects;
+using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace Gameplay
@@ -18,6 +19,14 @@ namespace Gameplay
         private GunBehaviour _gun;
         private bool _hasGun;
 
+        private Quaternion _lastRotation = Quaternion.identity;
+        private float _currentRotation;
+        private float _lastTouchTime;
+
+        private bool _firstLaunch = true;
+        private bool _countingBigAir;
+        private const float BigAirThresholdSeconds = 2f;
+
         private void Awake()
         {
             gunSpawn.Spawned += gun =>
@@ -26,14 +35,27 @@ namespace Gameplay
                 _gun = gun;
                 _gun.ShotFired += OnShotFired;
                 _gun.HitSurface += OnHitSurface;
+                _gun.LeftSurface += OnLeftSurface;
                 _gun.Reflection += OnReflection;
                 _gun.TipTap += OnTipTap;
+                _gun.Launched += OnLaunched;
             };
         }
 
-        private void OnTipTap()
+        private void OnLaunched()
         {
-            ShowPoints(config.tipTap);
+            if (!_firstLaunch) return;
+
+            ResetBigAir();
+            _firstLaunch = false;
+        }
+
+        private void Update()
+        {
+            if (!_hasGun) return;
+
+            TrackFlips();
+            TrackAirTime();
         }
 
         private void OnReflection(Vector3 reflectionPoint)
@@ -41,9 +63,36 @@ namespace Gameplay
             ShowPointsPosition(config.reflect, reflectionPoint);
         }
 
+        private void OnTipTap()
+        {
+            ResetBigAir();
+            ShowPoints(config.tipTap);
+        }
+
         private void OnHitSurface()
         {
+            _countingBigAir = false;
             _currentRotation = 0;
+        }
+
+        private void OnLeftSurface()
+        {
+            ResetBigAir();
+        }
+
+        private void ResetBigAir()
+        {
+            _lastTouchTime = Time.time;
+            _countingBigAir = true;
+        }
+
+        private void TrackAirTime()
+        {
+            if (Time.time - _lastTouchTime < BigAirThresholdSeconds || !_countingBigAir) return;
+
+            _lastTouchTime = Time.time - BigAirThresholdSeconds / 2;
+
+            ShowPoints(config.bigAir);
         }
 
         private void OnShotFired(ShotInfo shot)
@@ -63,15 +112,6 @@ namespace Gameplay
 
         }
 
-        private void Update()
-        {
-            if (!_hasGun) return;
-
-            TrackFlips();
-        }
-
-        private Quaternion _lastRotation = Quaternion.identity;
-        private float _currentRotation;
         private void TrackFlips()
         {
             var rotation = _gun.transform.rotation;

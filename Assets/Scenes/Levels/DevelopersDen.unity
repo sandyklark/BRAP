@@ -910,6 +910,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShatterableApple (5)
       objectReference: {fileID: 0}
+    - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6660511497220798253, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_RootOrder
       value: 22
@@ -1797,6 +1801,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShatterableApple (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6660511497220798253, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_RootOrder
       value: 19
@@ -2187,6 +2195,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BreakableCandle (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 3867264615454300209, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
 --- !u!4 &716707783 stripped
@@ -2331,6 +2343,10 @@ PrefabInstance:
     - target: {fileID: 3867264615454300209, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
       propertyPath: m_Name
       value: BreakableCandle (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3867264615454300209, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
@@ -2707,6 +2723,10 @@ PrefabInstance:
     - target: {fileID: 3867264615454300209, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
       propertyPath: m_Name
       value: BreakableCandle (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 3867264615454300209, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c923096d9e24b45368a1085cd975f3c3, type: 3}
@@ -3427,6 +3447,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShatterableApple (4)
       objectReference: {fileID: 0}
+    - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6660511497220798253, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_RootOrder
       value: 21
@@ -4054,6 +4078,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShatterableApple (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6660511497220798253, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_RootOrder
       value: 18
@@ -4142,6 +4170,10 @@ PrefabInstance:
     - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_Name
       value: ShatterableApple (3)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6660511497220798253, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_RootOrder
@@ -4573,7 +4605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1621905061
 Transform:
   m_ObjectHideFlags: 0
@@ -5789,7 +5821,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1934525275
 Transform:
   m_ObjectHideFlags: 0
@@ -7464,6 +7496,10 @@ PrefabInstance:
     - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_Name
       value: ShatterableApple
+      objectReference: {fileID: 0}
+    - target: {fileID: 6660511497220798252, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6660511497220798253, guid: 69e4f931814554ef9858a04bfbfc4aa9, type: 3}
       propertyPath: m_RootOrder

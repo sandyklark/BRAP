@@ -21,7 +21,9 @@ namespace Gun
         public Action<ShotInfo> ShotFired;
         public Action<Vector3> Reflection;
         public Action HitSurface;
+        public Action LeftSurface;
         public Action TipTap;
+        public Action Launched;
 
         [Header("Config")]
         public float recoilAdjustStrength = 1f;
@@ -169,12 +171,14 @@ namespace Gun
             );
 
             _rigidbody.AddTorque(
-                3f,
+                Random.Range(-3f, 3f),
                 ForceMode2D.Impulse
             );
 
             sparks.transform.position = transform.position + Vector3.up;
             sparks.Emit(5);
+
+            Launched?.Invoke();
         }
 
         private void InternalFire(Ray? reflectionRay = null)
@@ -306,6 +310,11 @@ namespace Gun
             _isTipTapping = false;
         }
 
+        private void OnCollisionExit2D(Collision2D other)
+        {
+            LeftSurface?.Invoke();
+        }
+
         private void OnTipTap()
         {
             _tipTapSeconds = 0f;
@@ -318,7 +327,7 @@ namespace Gun
 
             _tipTapSeconds += Time.deltaTime;
 
-            if (!(_tipTapSeconds >= TipTapThresholdSeconds)) return;
+            if (_tipTapSeconds < TipTapThresholdSeconds) return;
 
             _tipTapSeconds = 0;
             _isTipTapping = false;

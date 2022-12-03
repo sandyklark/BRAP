@@ -2,7 +2,6 @@ using System;
 using Global;
 using ScriptableObjects;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -18,7 +17,7 @@ namespace UI
         public Button button;
 
         private Animator _animator;
-        private SceneAsset _targetScene;
+        private string _targetScene;
         private bool _isSelected;
         private LevelDefinition _level;
 
@@ -32,7 +31,7 @@ namespace UI
                 if (_isSelected)
                 {
                     GlobalData.CurrentLevel = _level;
-                    SceneManager.LoadScene(_targetScene.name);
+                    SceneManager.LoadScene(_targetScene);
                 }
                 else
                 {
@@ -51,7 +50,7 @@ namespace UI
         public void SetValues(LevelDefinition levelDefinition)
         {
             _level = levelDefinition;
-            _targetScene = _level.scene;
+            _targetScene = _level.sceneName;
             descriptionText.text = _level.title;
             thumbnailImage.sprite = _level.thumbnail;
         }
