@@ -21,7 +21,7 @@ MonoBehaviour:
     color: {r: 0.18623178, g: 0.8773585, b: 0.74365526, a: 0}
     value: 35
   onTarget:
-    name: ' '
+    name: HIT
     color: {r: 1, g: 0.3066038, b: 0.3066038, a: 0}
     value: 20
   reflect:

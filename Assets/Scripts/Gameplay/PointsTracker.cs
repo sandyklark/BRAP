@@ -71,19 +71,20 @@ namespace Gameplay
 
         private void OnHitSurface()
         {
-            _countingBigAir = false;
+            ResetBigAir();
             _currentRotation = 0;
         }
 
         private void OnLeftSurface()
         {
             ResetBigAir();
+            _countingBigAir = true;
         }
 
         private void ResetBigAir()
         {
             _lastTouchTime = Time.time;
-            _countingBigAir = true;
+            _countingBigAir = false;
         }
 
         private void TrackAirTime()

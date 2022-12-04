@@ -47,19 +47,17 @@ namespace Gun
         private GunTip _gunTip;
         private float _currentRecoilAdjust;
         private List<Vector3> _linePositions = new();
-
         private float _lastShotDistance;
-        private float _lastShotReflectedDistance;
         private float _lastLaunchTime;
-
-        private float _tipTapSeconds;
         private bool _isTipTapping;
-        private const float TipTapThresholdSeconds = 0.3f;
+        private float _tipTapSeconds;
+        private Vector2 _launchDirection = Vector2.up;
 
+        private const float TipTapThresholdSeconds = 0.3f;
+        private const float ForcePushRadius = 2f;
         private const float HitForce = 20f;
         private const float KickForce = 20f;
         private const float SmokeDurationSeconds = 0.5f;
-        private Vector2 _launchDirection = Vector2.up;
 
         public void Fire()
         {
@@ -144,7 +142,7 @@ namespace Gun
 
             _shouldFire = false;
             _reflectionCount = 0;
-            _lastShotDistance = _lastShotReflectedDistance = 0f;
+            _lastShotDistance = 0f;
             _linePositions = new List<Vector3>();
 
             if (_isLaunched)
@@ -171,14 +169,31 @@ namespace Gun
             );
 
             _rigidbody.AddTorque(
-                Random.Range(-3f, 3f),
+                Random.value > 0.5f ? 3f : -3f,
                 ForceMode2D.Impulse
             );
 
             sparks.transform.position = transform.position + Vector3.up;
             sparks.Emit(5);
 
+            ForcePush();
+
             Launched?.Invoke();
+        }
+
+        private void ForcePush()
+        {
+            var position = transform.position;
+            var colliders = Physics2D.OverlapCircleAll(position, ForcePushRadius);
+
+            foreach (var col in colliders)
+            {
+                var force = (col.transform.position - position) * KickForce;
+                if (col.TryGetComponent<Rigidbody2D>(out var rigid))
+                {
+                    rigid.AddForce(force, ForceMode2D.Impulse);
+                }
+            }
         }
 
         private void InternalFire(Ray? reflectionRay = null)
@@ -228,10 +243,6 @@ namespace Gun
                     shotDistance = _lastShotDistance,
                     hitPoint = hit.point
                 });
-            }
-            else
-            {
-                _lastShotReflectedDistance += Vector3.Distance(position, hit.point);
             }
         }
 
@@ -303,14 +314,14 @@ namespace Gun
 
         private void OnCollisionEnter2D(Collision2D col)
         {
-            if (col.otherCollider.TryGetComponent<GunTip>(out var tip)) return;
+            var isTip = col.otherCollider.TryGetComponent<GunTip>(out var tip);
 
             HitSurface?.Invoke();
             _tipTapSeconds = 0f;
-            _isTipTapping = false;
+            _isTipTapping = isTip;
         }
 
-        private void OnCollisionExit2D(Collision2D other)
+        private void OnCollisionExit2D(Collision2D col)
         {
             LeftSurface?.Invoke();
         }
