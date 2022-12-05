@@ -21,5 +21,6 @@ namespace ScriptableObjects
         public PointsItem proximity;
         public PointsItem pointBlank;
         public PointsItem bigAir;
+        public PointsItem questComplete;
     }
 }

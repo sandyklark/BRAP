@@ -1,8 +1,8 @@
 using System;
 using Effects;
+using Gameplay.Quest;
 using Gun;
 using ScriptableObjects;
-using UnityEditor.Rendering;
 using UnityEngine;
 
 namespace Gameplay
@@ -15,6 +15,7 @@ namespace Gameplay
 
         public PointsConfig config;
         public GunSpawn gunSpawn;
+        public QuestHub questHub;
 
         private GunBehaviour _gun;
         private bool _hasGun;
@@ -40,6 +41,13 @@ namespace Gameplay
                 _gun.TipTap += OnTipTap;
                 _gun.Launched += OnLaunched;
             };
+
+            questHub.QuestCompleted += OnQuestCompleted;
+        }
+
+        private void OnQuestCompleted(Quest.Quest quest)
+        {
+            ShowPoints(config.questComplete);
         }
 
         private void OnLaunched()

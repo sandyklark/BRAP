@@ -1,16 +1,22 @@
+using System;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace Gameplay
 {
     public class GameplayController : MonoBehaviour
     {
+        public Action GameOver;
+
+        private LevelDefinition _level;
+        private bool _hasLevel;
+
         public float RemainingTimeSeconds
         {
             get
             {
-                return 0;
-                // if (levelDefinition == null || Time.time > _startTime + levelDefinition.timeLimitSeconds) return 0;
-                // return levelDefinition == null ? 0 : _startTime + levelDefinition.timeLimitSeconds - Time.time;
+                if (!_hasLevel || Time.time > _startTime + _level.timeLimitSeconds) return 0;
+                return _startTime + _level.timeLimitSeconds - Time.time;
             }
         }
 
@@ -19,7 +25,14 @@ namespace Gameplay
 
         private void Awake()
         {
-            Debug.Log("Missing level information. \nPlease add a reference to a LevelDefinition to the GameplayController component.");
+            _level = FindObjectOfType<LevelReference>()?.level;
+
+            _hasLevel = _level != null;
+
+            if (!_hasLevel)
+            {
+                Debug.Log("Missing level information. \nPlease add a reference to a LevelDefinition to the GameplayController component.");
+            }
         }
 
         private void Start()
@@ -30,10 +43,12 @@ namespace Gameplay
         private void Update()
         {
             if(_isGameOver) return;
-            // if (RemainingTimeSeconds > 0f) return;
-            //
-            // _isGameOver = true;
-            // Debug.Log("END");
+
+            if (RemainingTimeSeconds > 0f) return;
+
+            _isGameOver = true;
+
+            GameOver?.Invoke();
         }
     }
 }

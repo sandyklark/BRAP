@@ -188,7 +188,9 @@ namespace Gun
 
             foreach (var col in colliders)
             {
-                var force = (col.transform.position - position) * KickForce;
+                var otherPos = col.transform.position;
+                var power = KickForce * (1f - Vector2.Distance(position, otherPos) / ForcePushRadius);
+                var force = (otherPos - position) * power;
                 if (col.TryGetComponent<Rigidbody2D>(out var rigid))
                 {
                     rigid.AddForce(force, ForceMode2D.Impulse);
