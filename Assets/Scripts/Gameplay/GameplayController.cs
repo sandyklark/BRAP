@@ -1,6 +1,8 @@
 using System;
+using Player;
 using ScriptableObjects;
 using UnityEngine;
+using Util;
 
 namespace Gameplay
 {
@@ -33,6 +35,17 @@ namespace Gameplay
             {
                 Debug.Log("Missing level information. \nPlease add a reference to a LevelDefinition to the GameplayController component.");
             }
+            else
+            {
+                var playerProgress = PlayerData.Load();
+
+                Debug.Log(playerProgress.unlocked);
+                playerProgress.unlocked.Add(_level.ID.ToString());
+
+                PlayerData.Save(playerProgress);
+
+            }
+
         }
 
         private void Start()
