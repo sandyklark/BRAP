@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Util;
 
 namespace ScriptableObjects
 {
@@ -7,7 +8,8 @@ namespace ScriptableObjects
     [Serializable]
     public class LevelDefinition : ScriptableObject
     {
-        public readonly Guid ID = Guid.NewGuid();
+        [ScriptableObjectId]
+        public string id;
         public string title;
         public string description;
         public string sceneName;

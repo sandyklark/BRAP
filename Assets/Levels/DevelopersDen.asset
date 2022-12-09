@@ -12,9 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaec9ddf85c84ee7a3f0cf9c27b2c80, type: 3}
   m_Name: DevelopersDen
   m_EditorClassIdentifier: 
+  id: 058dd69a-76d8-4648-acc9-4f0186f0ad27
   title: The Developer's Den
   description: A den of nonsense
   sceneName: DevelopersDen
   thumbnail: {fileID: 21300000, guid: d74d31f6e777044b5b7d2eb185ed9f85, type: 3}
-  timeLimitSeconds: 30
-  ammoLimit: 15
+  timeLimitSeconds: 120
+  ammoLimit: 0

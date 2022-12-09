@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -10,24 +11,27 @@ namespace Player
         private const string SaveFileName = "T2B_SaveData.json";
         private static string SaveFilePath => Path.Join(Application.persistentDataPath, SaveFileName);
 
-        public static GameProgress Load()
+        public static Progress Progress { get; private set; }
+
+        public static void Load()
         {
             if (File.Exists(SaveFilePath))
             {
                 var json = File.ReadAllText(SaveFilePath);
-                return JsonConvert.DeserializeObject<GameProgress>(json);
+                Progress = JsonConvert.DeserializeObject<Progress>(json);
+                return;
             }
 
             Debug.LogWarning("File not found: " + SaveFilePath);
-            return new GameProgress
+            Progress = new Progress
             {
                 unlocked = new List<string>()
             };
         }
 
-        public static void Save(GameProgress gameProgress)
+        public static void Save()
         {
-            File.WriteAllText(SaveFilePath, JsonConvert.SerializeObject(gameProgress, Formatting.Indented));
+            File.WriteAllText(SaveFilePath, JsonConvert.SerializeObject(Progress, Formatting.Indented));
         }
     }
 }

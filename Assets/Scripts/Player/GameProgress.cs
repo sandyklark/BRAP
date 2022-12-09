@@ -19,7 +19,7 @@ namespace Player
     }
 
     [Serializable]
-    public struct GameProgress
+    public struct Progress
     {
         public List<string> unlocked;
         public TokenData tokenData;

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cbaec9ddf85c84ee7a3f0cf9c27b2c80, type: 3}
   m_Name: SharpSpace
   m_EditorClassIdentifier: 
+  id: 2dd4b3f6-f475-449b-ba06-800e01cc0ae1
   title: A Sharp Space
   description: Ouch
   sceneName: SharpSpace
