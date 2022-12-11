@@ -17,5 +17,10 @@ MonoBehaviour:
   description: A den of nonsense
   sceneName: DevelopersDen
   thumbnail: {fileID: 21300000, guid: d74d31f6e777044b5b7d2eb185ed9f85, type: 3}
-  timeLimitSeconds: 120
+  timeLimitSeconds: 60
   ammoLimit: 0
+  quests:
+  - {fileID: 11400000, guid: 7a05f3b52f44c42d1bd02941485ceb48, type: 2}
+  - {fileID: 11400000, guid: 471c9a8a70a404e588d54b8208ea3b0f, type: 2}
+  - {fileID: 11400000, guid: cc26140b5fc714f4991784cf62c8703b, type: 2}
+  - {fileID: 11400000, guid: f41b6179492974d3cb10cb924ede94cb, type: 2}

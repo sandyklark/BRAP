@@ -1,20 +1,20 @@
 using System;
+using System.Collections.Generic;
+using Gameplay.Quest;
 using UnityEngine;
-using Util;
 
 namespace ScriptableObjects
 {
     [CreateAssetMenu(fileName = "NewLevel", menuName = "ScriptableObjects/LevelDefinition")]
     [Serializable]
-    public class LevelDefinition : ScriptableObject
+    public class LevelDefinition : IdentifiableScriptableObject
     {
-        [ScriptableObjectId]
-        public string id;
         public string title;
         public string description;
         public string sceneName;
         public Sprite thumbnail;
         public float timeLimitSeconds;
         public int ammoLimit;
+        public List<QuestDefinition> quests;
     }
 }

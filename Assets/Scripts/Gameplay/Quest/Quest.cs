@@ -1,4 +1,5 @@
 using System;
+using ScriptableObjects;
 using UnityEngine;
 
 namespace Gameplay.Quest
@@ -6,11 +7,10 @@ namespace Gameplay.Quest
     public class Quest : MonoBehaviour
     {
         public Action<Quest> Complete;
-        public bool IsComplete { get; private set; }
-        public string Description => !secretUntilComplete || IsComplete ? description : "???";
 
-        public bool secretUntilComplete;
-        public string description;
+        public QuestDefinition questDefinition;
+        public bool IsComplete { get; private set; }
+        public string Description => !questDefinition.secretUntilComplete || IsComplete ? questDefinition.description : "???";
 
         public void Trigger()
         {

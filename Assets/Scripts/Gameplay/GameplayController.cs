@@ -37,13 +37,20 @@ namespace Gameplay
             }
             else
             {
-                var playerProgress = PlayerData.Load();
+                var levelId = _level.id;
 
-                Debug.Log(playerProgress.unlocked);
-                playerProgress.unlocked.Add(_level.ID.ToString());
+                // load saved data
+                PlayerData.Load();
 
-                PlayerData.Save(playerProgress);
+                // if level id is NOT unlocked
+                if (!Unlocks.Check(levelId))
+                {
+                    // unlock it
+                    Unlocks.Unlock(levelId);
+                }
 
+                // save player data
+                PlayerData.Save();
             }
 
         }
